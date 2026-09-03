@@ -323,7 +323,7 @@ header h1 {
         );
 
     -webkit-background-clip: text;
-
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 
     cursor: pointer;
@@ -342,7 +342,7 @@ body.light-mode header h1 {
         );
 
     -webkit-background-clip: text;
-
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -626,7 +626,7 @@ body.light-mode .hero-badge {
     background-size: 250% auto;
 
     -webkit-background-clip: text;
-
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 
     animation:
@@ -646,7 +646,7 @@ body.light-mode .hero-content h2 {
     background-size: 250% auto;
 
     -webkit-background-clip: text;
-
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
