@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Blogify</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+
+    <h1>📝 Blogify</h1>
+
+    <nav>
+      <a href="/">Home</a>
+      <a href="/register.html">Register</a>
+      <a href="/login.html">Login</a>
+
+      <button id="themeToggle" type="button">
+        ☀️ Light
+      </button>
+
+      <button id="logoutBtn" type="button">
+        Logout
+      </button>
+    </nav>
+
+  </header>
+
+
+  <!-- Main Content -->
+  <main>
+
+    <!-- Hero Section -->
+    <section id="welcomeSection">
+
+      <div class="hero-content">
+
+        <span class="hero-badge">
+          ✍️ Welcome to Blogify
+        </span>
+
+        <h2>
+          Share Your Story.<br>
+          Inspire the World.
+        </h2>
+
+        <p>
+          Write, publish and connect with people through
+          stories, ideas and experiences.
+        </p>
+
+        <p id="userInfo"></p>
+
+      </div>
+
+    </section>
+
+
+    <!-- Create Post -->
+    <section id="createPostSection">
+
+      <h2>Create a New Post</h2>
+
+      <form id="postForm">
+
+        <input
+          type="text"
+          id="title"
+          placeholder="Enter post title"
+          required
+        >
+
+        <textarea
+          id="content"
+          placeholder="Write your post..."
+          rows="8"
+          required
+        ></textarea>
+
+        <button type="submit">
+          Publish Post
+        </button>
+
+      </form>
+
+      <p id="postMessage"></p>
+
+    </section>
+
+
+    <!-- Posts -->
+    <section id="postsSection">
+
+      <h2>Latest Posts</h2>
+
+      <div id="postsContainer">
+        <p>Loading posts...</p>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script src="/js/app.js"></script>
+
+</body>
+
+</html>
