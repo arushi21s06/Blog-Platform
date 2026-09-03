@@ -10,9 +10,7 @@ Built with a clean vanilla frontend and a powerful Node.js backend, Blogify comb
 
 ## 🌐 Live Preview
 
-🚀 **Live Demo:** Coming Soon
-
-📂 **GitHub Repository:** This repository
+🚀 **Live Demo:** (https://blogify-gold-two.vercel.app/)
 
 ---
 
