@@ -1,33 +1,41 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "/api";
 
 
-// ===============================
+// ========================================
 // REGISTER
-// ===============================
+// ========================================
 
 const registerForm = document.getElementById("registerForm");
-const registerMessage = document.getElementById("registerMessage");
 
 if (registerForm) {
-
-    registerForm.addEventListener("submit", async function (event) {
-
+    registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
+        const name =
+            document.getElementById("name").value.trim();
 
-        if (!name || !email || !password) {
-            registerMessage.textContent =
-                "Please fill in all fields.";
-            return;
-        }
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const message =
+            document.getElementById("message");
+
+        const submitButton =
+            registerForm.querySelector("button[type='submit']");
 
         try {
+            submitButton.disabled = true;
+            submitButton.textContent = "Creating Account...";
+
+            if (message) {
+                message.textContent = "";
+            }
 
             const response = await fetch(
-                API_URL + "/auth/register",
+                `${API_URL}/auth/register`,
                 {
                     method: "POST",
 
@@ -36,71 +44,84 @@ if (registerForm) {
                     },
 
                     body: JSON.stringify({
-                        name: name,
-                        email: email,
-                        password: password
+                        name,
+                        email,
+                        password
                     })
                 }
             );
 
             const data = await response.json();
 
-            console.log("Register response:", data);
-
             if (!response.ok || !data.success) {
-
-                registerMessage.textContent =
-                    data.message || "Registration failed.";
-
-                return;
+                throw new Error(
+                    data.message || "Registration failed"
+                );
             }
 
-            registerMessage.textContent =
-                "Registration successful! Redirecting to login...";
+            if (message) {
+                message.textContent =
+                    "✅ Registration successful! Redirecting to login...";
 
-            registerForm.reset();
+                message.className = "success-message";
+            }
 
-            setTimeout(function () {
+            setTimeout(() => {
                 window.location.href = "/login.html";
             }, 1000);
 
         } catch (error) {
-
             console.error("Registration error:", error);
 
-            registerMessage.textContent =
-                "Unable to connect to the server.";
+            if (message) {
+                message.textContent =
+                    error.message === "Failed to fetch"
+                        ? "Unable to connect to the server."
+                        : error.message;
+
+                message.className = "error-message";
+            }
+
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Register";
         }
     });
 }
 
 
-// ===============================
+// ========================================
 // LOGIN
-// ===============================
+// ========================================
 
 const loginForm = document.getElementById("loginForm");
-const loginMessage = document.getElementById("loginMessage");
 
 if (loginForm) {
-
-    loginForm.addEventListener("submit", async function (event) {
-
+    loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
+        const email =
+            document.getElementById("email").value.trim();
 
-        if (!email || !password) {
-            loginMessage.textContent =
-                "Please enter your email and password.";
-            return;
-        }
+        const password =
+            document.getElementById("password").value;
+
+        const message =
+            document.getElementById("message");
+
+        const submitButton =
+            loginForm.querySelector("button[type='submit']");
 
         try {
+            submitButton.disabled = true;
+            submitButton.textContent = "Logging in...";
+
+            if (message) {
+                message.textContent = "";
+            }
 
             const response = await fetch(
-                API_URL + "/auth/login",
+                `${API_URL}/auth/login`,
                 {
                     method: "POST",
 
@@ -109,43 +130,51 @@ if (loginForm) {
                     },
 
                     body: JSON.stringify({
-                        email: email,
-                        password: password
+                        email,
+                        password
                     })
                 }
             );
 
             const data = await response.json();
 
-            console.log("Login response:", data);
-
             if (!response.ok || !data.success) {
-
-                loginMessage.textContent =
-                    data.message || "Login failed.";
-
-                return;
+                throw new Error(
+                    data.message || "Login failed"
+                );
             }
 
-            // Save JWT token
             localStorage.setItem(
                 "token",
                 data.token
             );
 
-            loginMessage.textContent =
-                "Login successful! Redirecting...";
+            if (message) {
+                message.textContent =
+                    "✅ Login successful! Redirecting...";
 
-            setTimeout(function () {
+                message.className = "success-message";
+            }
+
+            setTimeout(() => {
                 window.location.href = "/";
-            }, 1000);
+            }, 500);
 
         } catch (error) {
-
             console.error("Login error:", error);
 
-            loginMessage.textContent =
-                "Unable to connect to the server.";
+            if (message) {
+                message.textContent =
+                    error.message === "Failed to fetch"
+                        ? "Unable to connect to the server."
+                        : error.message;
+
+                message.className = "error-message";
+            }
+
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Login";
         }
     });
 }
