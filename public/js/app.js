@@ -15,8 +15,11 @@ try {
     if (savedUser) {
         currentUser = JSON.parse(savedUser);
     }
+
 } catch (error) {
+
     console.error("Unable to read saved user:", error);
+
     localStorage.removeItem("user");
 }
 
@@ -52,7 +55,9 @@ function updateThemeButton() {
 
     if (!themeToggle) return;
 
-    if (document.body.classList.contains("light-mode")) {
+    if (
+        document.body.classList.contains("light-mode")
+    ) {
 
         themeToggle.textContent = "🌙 Dark";
 
@@ -108,7 +113,7 @@ loadSavedTheme();
 
 
 // ========================================
-// GET USER ID
+// GET USER ID FROM TOKEN
 // ========================================
 
 function getUserIdFromToken() {
@@ -156,19 +161,21 @@ function updateAuthenticationUI() {
     if (!authSection) return;
 
 
-    // USER IS LOGGED IN
+    // ====================================
+    // LOGGED IN USER
+    // ====================================
 
     if (token && currentUser) {
 
         const safeName =
-            escapeHTML(currentUser.name || "User");
-
-        const safeId =
             escapeHTML(
-                currentUser.id ||
-                currentUser._id ||
-                currentUserId ||
-                ""
+                currentUser.name || "User"
+            );
+
+
+        const safeEmail =
+            escapeHTML(
+                currentUser.email || ""
             );
 
 
@@ -181,10 +188,11 @@ function updateAuthenticationUI() {
                 </strong>
 
                 <span>
-                    ID: ${safeId}
+                    📧 ${safeEmail}
                 </span>
 
             </div>
+
 
             <button
                 id="logoutBtn"
@@ -212,7 +220,9 @@ function updateAuthenticationUI() {
 
     } else {
 
-        // USER IS NOT LOGGED IN
+        // ====================================
+        // NOT LOGGED IN
+        // ====================================
 
         authSection.innerHTML = `
 
@@ -256,6 +266,7 @@ function updateUserInfo() {
 
 
 updateAuthenticationUI();
+
 updateUserInfo();
 
 
@@ -270,10 +281,12 @@ function logoutUser() {
             "Are you sure you want to logout?"
         );
 
+
     if (!confirmed) return;
 
 
     localStorage.removeItem("token");
+
     localStorage.removeItem("user");
 
 
@@ -307,7 +320,10 @@ async function loadPosts() {
             await response.json();
 
 
-        if (!response.ok || !data.success) {
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
             throw new Error(
                 data.message ||
@@ -343,7 +359,6 @@ async function loadPosts() {
             `;
 
             return;
-
         }
 
 
@@ -445,6 +460,7 @@ async function loadPosts() {
                                     ✏️ Edit
                                 </button>
 
+
                                 <button
                                     class="delete-btn"
                                     onclick="deletePost('${post._id}')"
@@ -490,6 +506,7 @@ async function loadPosts() {
                                         rows="2"
                                     ></textarea>
 
+
                                     <button
                                         onclick="addComment('${post._id}')"
                                     >
@@ -502,7 +519,9 @@ async function loadPosts() {
                             : `
 
                                 <p class="login-comment-message">
+
                                     🔐 Login to leave a comment.
+
                                 </p>
 
                             `
@@ -547,7 +566,10 @@ async function loadPosts() {
                     ${escapeHTML(error.message)}
                 </p>
 
-                <button onclick="loadPosts()">
+
+                <button
+                    onclick="loadPosts()"
+                >
                     🔄 Try Again
                 </button>
 
@@ -587,7 +609,10 @@ async function loadComments(postId) {
             await response.json();
 
 
-        if (!response.ok || !data.success) {
+        if (
+            !response.ok ||
+            !data.success
+        ) {
 
             throw new Error(
                 data.message ||
@@ -605,14 +630,15 @@ async function loadComments(postId) {
             commentsContainer.innerHTML = `
 
                 <p class="no-comments">
+
                     No comments yet.
                     Be the first to comment! 💭
+
                 </p>
 
             `;
 
             return;
-
         }
 
 
@@ -669,6 +695,7 @@ async function loadComments(postId) {
                     <strong>
                         👤 ${escapeHTML(authorName)}
                     </strong>
+
 
                     <span>
                         ${date}
@@ -743,7 +770,6 @@ async function addComment(postId) {
         );
 
         return;
-
     }
 
 
@@ -767,7 +793,6 @@ async function addComment(postId) {
         );
 
         return;
-
     }
 
 
@@ -780,16 +805,19 @@ async function addComment(postId) {
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json",
 
                         Authorization:
                             `Bearer ${token}`
+
                     },
 
                     body: JSON.stringify({
                         content
                     })
+
                 }
             );
 
@@ -866,9 +894,12 @@ async function deleteComment(
                     method: "DELETE",
 
                     headers: {
+
                         Authorization:
                             `Bearer ${token}`
+
                     }
+
                 }
             );
 
@@ -932,7 +963,6 @@ if (postForm) {
                 );
 
                 return;
-
             }
 
 
@@ -957,7 +987,6 @@ if (postForm) {
                 );
 
                 return;
-
             }
 
 
@@ -990,17 +1019,22 @@ if (postForm) {
                             method: "POST",
 
                             headers: {
+
                                 "Content-Type":
                                     "application/json",
 
                                 Authorization:
                                     `Bearer ${token}`
+
                             },
 
                             body: JSON.stringify({
+
                                 title,
                                 content
+
                             })
+
                         }
                     );
 
@@ -1093,7 +1127,6 @@ async function editPost(postId) {
         );
 
         return;
-
     }
 
 
@@ -1156,7 +1189,6 @@ async function editPost(postId) {
             );
 
             return;
-
         }
 
 
@@ -1167,20 +1199,25 @@ async function editPost(postId) {
                     method: "PUT",
 
                     headers: {
+
                         "Content-Type":
                             "application/json",
 
                         Authorization:
                             `Bearer ${token}`
+
                     },
 
                     body: JSON.stringify({
+
                         title:
                             newTitle.trim(),
 
                         content:
                             newContent.trim()
+
                     })
+
                 }
             );
 
@@ -1235,7 +1272,6 @@ async function deletePost(postId) {
         );
 
         return;
-
     }
 
 
@@ -1257,9 +1293,12 @@ async function deletePost(postId) {
                     method: "DELETE",
 
                     headers: {
+
                         Authorization:
                             `Bearer ${token}`
+
                     }
+
                 }
             );
 
@@ -1318,22 +1357,27 @@ function escapeHTML(value) {
 
 
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
