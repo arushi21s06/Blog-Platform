@@ -54,8 +54,28 @@ if (registerForm) {
         event.preventDefault();
 
         const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
+        const email = document.getElementById("email").value.trim().toLowerCase();
         const password = document.getElementById("password").value;
+        
+        if (!name) {
+    throw new Error("Please enter your name.");
+}
+
+if (!email) {
+    throw new Error("Please enter your email.");
+}
+
+if (!email.includes("@")) {
+    throw new Error("Please enter a valid email address.");
+}
+
+if (!password) {
+    throw new Error("Please enter a password.");
+}
+
+if (password.length < 6) {
+    throw new Error("Password must be at least 6 characters.");
+}
 
         const message = document.getElementById("message");
         const submitButton =
