@@ -2,114 +2,117 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Blogify</title>
+    <title>Blogify</title>
 
-  <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
-  <!-- Header -->
-  <header>
+    <!-- Header -->
+    <header>
 
-    <h1>📝 Blogify</h1>
+        <h1>📝 Blogify</h1>
 
-    <nav>
-      <a href="/">Home</a>
-      <a href="/register.html">Register</a>
-      <a href="/login.html">Login</a>
+        <nav>
 
-      <button id="themeToggle" type="button">
-        ☀️ Light
-      </button>
+            <a href="/">Home</a>
 
-      <button id="logoutBtn" type="button">
-        Logout
-      </button>
-    </nav>
+            <div id="authSection">
 
-  </header>
+                <a href="/register.html">Register</a>
+                <a href="/login.html">Login</a>
 
+            </div>
 
-  <!-- Main Content -->
-  <main>
+            <button id="themeToggle" type="button">
+                ☀️ Light
+            </button>
 
-    <!-- Hero Section -->
-    <section id="welcomeSection">
+        </nav>
 
-      <div class="hero-content">
-
-        <span class="hero-badge">
-          ✍️ Welcome to Blogify
-        </span>
-
-        <h2>
-          Share Your Story.<br>
-          Inspire the World.
-        </h2>
-
-        <p>
-          Write, publish and connect with people through
-          stories, ideas and experiences.
-        </p>
-
-        <p id="userInfo"></p>
-
-      </div>
-
-    </section>
+    </header>
 
 
-    <!-- Create Post -->
-    <section id="createPostSection">
+    <!-- Main Content -->
+    <main>
 
-      <h2>Create a New Post</h2>
+        <!-- Hero Section -->
+        <section id="welcomeSection">
 
-      <form id="postForm">
+            <div class="hero-content">
 
-        <input
-          type="text"
-          id="title"
-          placeholder="Enter post title"
-          required
-        >
+                <span class="hero-badge">
+                    ✍️ Welcome to Blogify
+                </span>
 
-        <textarea
-          id="content"
-          placeholder="Write your post..."
-          rows="8"
-          required
-        ></textarea>
+                <h2>
+                    Share Your Story.<br>
+                    Inspire the World.
+                </h2>
 
-        <button type="submit">
-          Publish Post
-        </button>
+                <p>
+                    Write, publish and connect with people through
+                    stories, ideas and experiences.
+                </p>
 
-      </form>
+                <p id="userInfo"></p>
 
-      <p id="postMessage"></p>
+            </div>
 
-    </section>
+        </section>
 
 
-    <!-- Posts -->
-    <section id="postsSection">
+        <!-- Create Post -->
+        <section id="createPostSection">
 
-      <h2>Latest Posts</h2>
+            <h2>Create a New Post</h2>
 
-      <div id="postsContainer">
-        <p>Loading posts...</p>
-      </div>
+            <form id="postForm">
 
-    </section>
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="Enter post title"
+                    required
+                >
 
-  </main>
+                <textarea
+                    id="content"
+                    placeholder="Write your post..."
+                    rows="8"
+                    required
+                ></textarea>
+
+                <button type="submit">
+                    Publish Post
+                </button>
+
+            </form>
+
+            <p id="postMessage"></p>
+
+        </section>
 
 
-  <script src="/js/app.js"></script>
+        <!-- Posts -->
+        <section id="postsSection">
+
+            <h2>Latest Posts</h2>
+
+            <div id="postsContainer">
+                <p>Loading posts...</p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="/js/app.js"></script>
 
 </body>
 
