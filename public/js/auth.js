@@ -1,9 +1,51 @@
 const API_URL = "/api";
 
+async function apiRequest(url, options = {}) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
 
-// ========================================
+    try {
+        const response = await fetch(url, {
+            ...options,
+            signal: controller.signal
+        });
+
+        const text = await response.text();
+
+        let data;
+
+        try {
+            data = JSON.parse(text);
+        } catch {
+            throw new Error("Invalid response from server");
+        }
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Request failed");
+        }
+
+        return data;
+
+    } catch (error) {
+        if (error.name === "AbortError") {
+            throw new Error("Server took too long to respond. Please try again.");
+        }
+
+        if (error.message === "Failed to fetch") {
+            throw new Error("Unable to connect to the server.");
+        }
+
+        throw error;
+
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+
+// =========================
 // REGISTER
-// ========================================
+// =========================
 
 const registerForm = document.getElementById("registerForm");
 
@@ -11,38 +53,30 @@ if (registerForm) {
     registerForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const name =
-            document.getElementById("name").value.trim();
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
 
-        const email =
-            document.getElementById("email").value.trim();
-
-        const password =
-            document.getElementById("password").value;
-
-        const message =
-            document.getElementById("message");
-
+        const message = document.getElementById("message");
         const submitButton =
             registerForm.querySelector("button[type='submit']");
 
         try {
             submitButton.disabled = true;
-            submitButton.textContent = "Creating Account...";
+            submitButton.textContent = "Registering...";
 
             if (message) {
                 message.textContent = "";
+                message.className = "";
             }
 
-            const response = await fetch(
+            const data = await apiRequest(
                 `${API_URL}/auth/register`,
                 {
                     method: "POST",
-
                     headers: {
                         "Content-Type": "application/json"
                     },
-
                     body: JSON.stringify({
                         name,
                         email,
@@ -50,14 +84,6 @@ if (registerForm) {
                     })
                 }
             );
-
-            const data = await response.json();
-
-            if (!response.ok || !data.success) {
-                throw new Error(
-                    data.message || "Registration failed"
-                );
-            }
 
             if (message) {
                 message.textContent =
@@ -74,11 +100,7 @@ if (registerForm) {
             console.error("Registration error:", error);
 
             if (message) {
-                message.textContent =
-                    error.message === "Failed to fetch"
-                        ? "Unable to connect to the server."
-                        : error.message;
-
+                message.textContent = error.message;
                 message.className = "error-message";
             }
 
@@ -90,9 +112,9 @@ if (registerForm) {
 }
 
 
-// ========================================
+// =========================
 // LOGIN
-// ========================================
+// =========================
 
 const loginForm = document.getElementById("loginForm");
 
@@ -100,15 +122,10 @@ if (loginForm) {
     loginForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const email =
-            document.getElementById("email").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
 
-        const password =
-            document.getElementById("password").value;
-
-        const message =
-            document.getElementById("message");
-
+        const message = document.getElementById("message");
         const submitButton =
             loginForm.querySelector("button[type='submit']");
 
@@ -118,17 +135,16 @@ if (loginForm) {
 
             if (message) {
                 message.textContent = "";
+                message.className = "";
             }
 
-            const response = await fetch(
+            const data = await apiRequest(
                 `${API_URL}/auth/login`,
                 {
                     method: "POST",
-
                     headers: {
                         "Content-Type": "application/json"
                     },
-
                     body: JSON.stringify({
                         email,
                         password
@@ -136,18 +152,7 @@ if (loginForm) {
                 }
             );
 
-            const data = await response.json();
-
-            if (!response.ok || !data.success) {
-                throw new Error(
-                    data.message || "Login failed"
-                );
-            }
-
-            localStorage.setItem(
-                "token",
-                data.token
-            );
+            localStorage.setItem("token", data.token);
 
             if (message) {
                 message.textContent =
@@ -164,11 +169,7 @@ if (loginForm) {
             console.error("Login error:", error);
 
             if (message) {
-                message.textContent =
-                    error.message === "Failed to fetch"
-                        ? "Unable to connect to the server."
-                        : error.message;
-
+                message.textContent = error.message;
                 message.className = "error-message";
             }
 
